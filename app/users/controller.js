@@ -9,10 +9,10 @@ const User = models.User;
 function createUser(req, res) {
     const paramsValidation = [
         body('fullName').notEmpty().withMessage('Full Name is required'),
-        body('job').notEmpty().withMessage('job is required'),
-        body('role').notEmpty().withMessage('role is required'),
-        body('email').notEmpty().withMessage('email is required'),
-        body('password').notEmpty().withMessage('password is required'),
+        body('job').notEmpty().withMessage('Job is required'),
+        body('role').notEmpty().withMessage('Role is required'),
+        body('email').notEmpty().withMessage('Email is required'),
+        body('password').notEmpty().withMessage('Password is required'),
     ];
 
     Promise.all(paramsValidation.map(validation => validation.run(req)))
