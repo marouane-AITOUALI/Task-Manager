@@ -2,6 +2,7 @@ const config = require("./config.js");
 const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
+const users = require('./app/users');
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/', [users]);
 
 console.log(`API is running on a ${config.NODE_ENV} environment.`);
 
