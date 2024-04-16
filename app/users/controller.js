@@ -60,7 +60,34 @@ function updateUser(req, res) {
 
 }
 
+function deleteUser(req, res) {
+    const paramsValidation = [
+        param('_id').notEmpty().withMessage('User ID is required'),
+    ];
+
+    Promise.all(paramsValidation.map(validation => validation.run(req)))
+        .then(async () => {
+            const validationErr = validationResult(req);
+
+            if (!validationErr.isEmpty()) {
+                return res.status(400).send({
+                    errors: validationErr.array(),
+                });
+            }
+
+            const response = await usersService.deleteUser(req.params._id);
+            return res.send(response);
+        })
+}
+
+async function listAllUsers(req, res) {
+    const response = await usersService.listAllUsers();
+    return res.send(response);
+}
+
 module.exports = {
     createUser,
     updateUser,
+    deleteUser,
+    listAllUsers,
 };
