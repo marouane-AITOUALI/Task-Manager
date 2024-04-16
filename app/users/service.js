@@ -51,12 +51,30 @@ class UsersService {
         }
     }
 
-    async listAllUsers() {
-        const _users = await this.User.find();
+    async listAllUsers(page = 1, limit = 10, search = '') {
+        let query = {};
+        if (search) {
+            query = {
+                $or: [
+                    { fullName: { $regex: search, $options: "i" } },
+                    { job: { $regex: search, $options: "i" } },
+                    { role: { $regex: search, $options: "i" } },
+                ],
+            };
+        }
+        const _users = await this.User.find(query)
+            .limit(limit)
+            .skip((page - 1) * limit)
+
+        const _total = await this.User.countDocuments(query);
 
         return {
             message: 'list of all users',
             users: _users,
+            total: _total,
+            totalPages: Math.ceil(_total / limit),
+            currentPage: page,
+            limit: limit,
         };
     }
 

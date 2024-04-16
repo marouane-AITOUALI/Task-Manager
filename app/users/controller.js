@@ -1,6 +1,6 @@
 const UsersService = require('./service');
 const models = require('./../../models');
-const { body, param, validationResult } = require('express-validator');
+const { body, query, param, validationResult } = require('express-validator');
 
 const User = models.User;
 const usersService = new UsersService({ User });
@@ -81,7 +81,29 @@ function deleteUser(req, res) {
 }
 
 async function listAllUsers(req, res) {
-    const response = await usersService.listAllUsers();
+    const paramsValidation = [
+        query('page').optional().isInt().withMessage('Page must be an integer'),
+        query('limit').optional().isInt().withMessage('Limit must be an integer'),
+    ];
+
+    Promise.all(paramsValidation.map(validation => validation.run(req)))
+        .then(async () => {
+            const validationErr = validationResult(req);
+
+            if (!validationErr.isEmpty()) {
+                return res.status(400).send({
+                    errors: validationErr.array(),
+                });
+            }
+        })
+        .catch((err) => {
+            return res.status(500).send({
+                message: 'something went wrong!',
+            });
+        });
+
+
+    const response = await usersService.listAllUsers(req.query);
     return res.send(response);
 }
 
