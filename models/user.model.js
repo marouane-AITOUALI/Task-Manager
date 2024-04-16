@@ -19,6 +19,12 @@ const UserSchema = new Schema({
     password: {
         type: String
     },
+    tasks: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Task',
+        }
+    ]
 },
     {
         timestamps: true

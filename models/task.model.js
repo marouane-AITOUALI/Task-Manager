@@ -14,12 +14,13 @@ const TaskSchema = new Schema(
             enum: ['to-do', 'doing', 'done'],
             required: false,
         },
-        dueData: {
+        dueDate: {
             type: Date,
         },
         userId: {
             type: Schema.Types.ObjectId,
             ref: 'User',
+            required: true,
         }
     },
     {
