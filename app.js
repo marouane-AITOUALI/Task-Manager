@@ -3,6 +3,7 @@ const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
 const users = require('./app/users');
+const tasks = require('./app/tasks');
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.get('/', function (req, res) {
     message: 'it works !!'
   });
 });
-app.use('/', [users]);
+app.use('/', [users, tasks]);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

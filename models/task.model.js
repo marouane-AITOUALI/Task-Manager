@@ -15,7 +15,7 @@ const TaskSchema = new Schema(
             required: false,
         },
         dueData: {
-            type: Data
+            type: Date,
         },
         userId: {
             type: Schema.Types.ObjectId,
